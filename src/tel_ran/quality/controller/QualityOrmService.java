@@ -15,7 +15,7 @@ import static tel_ran.quality.api.QualityConstants.*;
 @ImportResource("classpath:beans.xml")
 @RestController
 public class QualityOrmService {
-/*	
+
 	private static final String PACKAGE_QUALITY = "tel_ran.quality.entites.";
 	@Autowired	
 	QualityOrm qualityOrm;
@@ -34,7 +34,7 @@ public class QualityOrmService {
 			} catch (IllegalArgumentException e) {
 				return e.getMessage();
 			}
-			boolean res = qualityOrm.addEmployee(employee);
+			boolean res = qualityOrm.addEmployee(employee, type);
 			if (res==false)
 				return "No added";
 		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
@@ -42,15 +42,15 @@ public class QualityOrmService {
 		} 
 		return "Success";
 	}
-
-/*	@RequestMapping (value = UPDATE_ADDRESS_CLIENT, method=RequestMethod.POST)
+	
+	@RequestMapping (value = UPDATE_ADDRESS, method=RequestMethod.POST)
 	public String updateAddress(@RequestBody IdAddress idAddress){
-		boolean res = qualityOrm.updateAddressClient(idAddress.getId(), 
+		boolean res = qualityOrm.updateAddress(idAddress.getId(), 
 				new Address(idAddress.getCity(), idAddress.getStreet(), idAddress.getBld(),idAddress.getAppart()));
 	    return res ? "update Success" : "client not found with id:" +idAddress.getId();
 	}
 	
-	
+
 	@RequestMapping (value = GET_CLIENT)
 	public Map<String,Object> getClient( int id ){
 		Map<String,Object> res = new LinkedHashMap<>();
@@ -78,7 +78,35 @@ public class QualityOrmService {
 		   res.put(DATA, employee);}
 		return res;
 	}
-	*/
+	
+	@RequestMapping (value = GET_COMPANY)
+	public Map<String,Object> getCompany( String name ){
+		Map<String,Object> res = new LinkedHashMap<>();
+		Company company = qualityOrm.getCompany(name);
+		if(company==null){
+			res.put(STATUS, "error");
+			res.put(DATA, "company not found " + name);
+		}
+		else {
+		   res.put(STATUS, "success");
+		   res.put(DATA, company);}
+		return res;
+	}
+	
+	@RequestMapping (value = GET_QUESTIONS_SERVICE)
+	public Map<String,Object> getQuestionsByService( String nameService ){
+		Map<String,Object> res = new LinkedHashMap<>();
+		Service service = qualityOrm.getService(nameService);
+		
+		if(service==null){
+			res.put(STATUS, "error");
+			res.put(DATA, "service not found " + nameService);
+		}
+		else {
+		   res.put(STATUS, "success");
+		   res.put(DATA, nameService);}
+		return res;
+	}
 		
 	public static void main(String[] args) {
 		SpringApplication.run(QualityOrmService.class, args);

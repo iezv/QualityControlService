@@ -2,6 +2,9 @@ package tel_ran.quality.entities;
 
 import java.util.*;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import static tel_ran.quality.api.QualityConstants.*;
 
 @Entity
@@ -11,9 +14,9 @@ public class Company {
 	@Column(name = "name", nullable = false, insertable = true, updatable = true)
 	String name;
 	String city;
-	
+
 	@OneToOne
-	Employee ceo;
+	Ceo ceo;
 	
 	public Company(String name, String city) {
 		super();
@@ -33,11 +36,11 @@ public class Company {
 		return city;
 	}
 
-	public Employee getCeo() {
+	public Ceo getCeo() {
 		return ceo;
 	}
 	
-	public void setCeo(Employee ceo) {
+	public void setCeo(Ceo ceo) {
 		this.ceo = ceo;
 	}
 
@@ -72,7 +75,6 @@ public class Company {
 	}
 	
 	public void setData(Map<String,Object>data) throws IllegalArgumentException {
-		System.out.println("123");
 		if( data==null ) 
 			new IllegalArgumentException("Data is null");
     try {
@@ -82,6 +84,7 @@ public class Company {
 					name = Id;
 			}
 			city = (String) data.get( CITY );
+			//ceo = new Employee();
 			}
     catch (Exception e) {
 			throw new IllegalArgumentException("Wrong data in the map");

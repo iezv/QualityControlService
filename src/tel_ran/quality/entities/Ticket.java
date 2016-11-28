@@ -13,17 +13,33 @@ public class Ticket {
 	int id;
 	LocalDate startDate;
 	LocalDate closeDate;
+	String status;
+	String questCod; 
+	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 		
+	public String getQuestCod() {
+		return questCod;
+	}
+
+	public void setQuestCod(String questCod) {
+		this.questCod = questCod;
+	}
+
 	@ManyToOne
 	Service service;
-	
-	@ManyToOne 
-	Question question;
 	
 	public Ticket(LocalDate startDate) {
 		super();
 		this.startDate = startDate;
-	}
+		status = "open";
+		}
 
 	public Ticket() {
 		super();
@@ -36,10 +52,6 @@ public class Ticket {
 
 	public void setService(Service service) {
 		this.service = service;
-	}
-
-	public void setQuestion(Question question) {
-		this.question = question;
 	}
 
 	public int getId() {
@@ -58,11 +70,6 @@ public class Ticket {
 		return service;
 	}
 
-	public Question getQuestion() {
-		return question;
-	}
-
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -88,7 +95,7 @@ public class Ticket {
 	@Override
 	public String toString() {
 		return "Ticket [id=" + id + ", startDate=" + startDate + ", closeDate=" + closeDate + ", service="
-				+ service + ", question=" + question + "]";
+				+ service + "]";
 	}
 	
 	public void setData(Map<String,Object>data) throws IllegalArgumentException {

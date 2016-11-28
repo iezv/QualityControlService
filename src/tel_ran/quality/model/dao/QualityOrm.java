@@ -1,7 +1,6 @@
 package tel_ran.quality.model.dao;
 
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.*;
 import javax.persistence.*;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,11 +12,10 @@ public class QualityOrm {
 	EntityManager em;
 
 	@Transactional
-	public boolean addCeo(Employee employee) {
-		if (em.find(Person.class, employee.getId()) != null)
+	public boolean addCeo(Ceo ceo) {
+		if (em.find(Person.class, ceo.getId()) != null)
 			return false;
-		employee.setManager(null);
-		em.persist(employee);
+		em.persist(ceo);
 		return true;
 	}
 
@@ -25,10 +23,14 @@ public class QualityOrm {
 	public boolean addCompany(Company company, int id) {
 		if (em.find(Company.class, company.getName()) != null)
 			return false;
-		Employee ceo = getEmployee(id);
+		Ceo ceo = getCeo(id);
 		company.setCeo(ceo);
 		em.persist(company);
 		return true;
+	}
+
+	private Ceo getCeo(int id) {
+		return em.find(Ceo.class, id);
 	}
 
 	@Transactional
@@ -49,8 +51,17 @@ public class QualityOrm {
 		em.persist(employee);
 		return true;
 	}
+	
+	@Transactional
+	public boolean updateAddress(int id, Address address){
+		Person person = em.find(Person.class, id);
+		if (person==null)
+			return false;
+		person.setAddress(address);
+		return true;
+	}
 
-	private Service getService(String servicename) {
+	public Service getService(String servicename) {
 		return em.find(Service.class, servicename);
 	}
 
@@ -97,7 +108,7 @@ public class QualityOrm {
 		return questions;
 	}
 
-	private Manager getManager(int managerId) {
+	public Manager getManager(int managerId) {
 		return em.find(Manager.class, managerId);
 	}
 	
@@ -128,12 +139,82 @@ public class QualityOrm {
         feedback.setClient(client);
         feedback.setService(service);
         em.persist(feedback);
+        isCreateTicket(feedback, service);
         return true;
     }
 
-	private Client getClient(int clientId) {
+	private void isCreateTicket(Feedback feedback, Service service) {
+		if (feedback.getResult().getQues1()<3||feedback.getResult().getQues2()<3||
+			feedback.getResult().getQues3()<3||feedback.getResult().getQues4()<3||
+			feedback.getResult().getQues5()<3 ) inspectTicket(feedback, service);
+	}
+
+	private void inspectTicket(Feedback feedback, Service service) {
+		if (feedback.getResult().getQues1()<3){
+			if(!isOpenTicket(service.getQues1())) {
+				long counter = countBadFeedback(service.getQues1(), feedback.getDate());
+				if (counter%10==0&&counter!=0) createTicket(feedback, service, service.getQues1());
+			}
+		}
+		if (feedback.getResult().getQues2()<3){
+			if(!isOpenTicket(service.getQues2())) {
+				long counter = countBadFeedback(service.getQues2(), feedback.getDate());
+				if (counter%10==0&&counter!=0) createTicket(feedback, service, service.getQues2());
+			}
+		}
+		if (feedback.getResult().getQues3()<3){
+			if(!isOpenTicket(service.getQues3())) {
+				long counter = countBadFeedback(service.getQues3(), feedback.getDate());
+				if (counter%10==0&&counter!=0) createTicket(feedback, service, service.getQues3());
+			}
+		}
+		if (feedback.getResult().getQues4()<3){
+			if(!isOpenTicket(service.getQues4())) {
+				long counter = countBadFeedback(service.getQues4(), feedback.getDate());
+				if (counter%10==0&&counter!=0) createTicket(feedback, service, service.getQues4());
+			}
+		}
+		if (feedback.getResult().getQues5()<3){
+			if(!isOpenTicket(service.getQues5())) {
+				long counter = countBadFeedback(service.getQues5(), feedback.getDate());
+				if (counter%10==0&&counter!=0) createTicket(feedback, service, service.getQues5());
+			}
+		}
+	}
+	
+	@Transactional
+	private void createTicket(Feedback feedback, Service service, String quesCod) {
+		 Ticket ticket = new Ticket(feedback.getDate());
+		 if (em.find(Ticket.class, feedback.getId()) == null){
+            ticket.setQuestCod(quesCod);
+            ticket.setService(service);
+            em.persist(ticket);
+      }
+	}
+
+	private long countBadFeedback(String ques1, LocalDate date) {
+		int month = date.getMonthValue();
+		long query=(long)em.createQuery(String.format ("select COUNT (f) from Feedback f where month (f.date)=%d", month)).getSingleResult();
+		return query;
+	}
+
+	private boolean isOpenTicket(String ques) {
+		long query=(long)em.createQuery(String.format ("select COUNT (t) from Ticket t where t.closeDate is NULL and "
+				+ "t.questCod='%s'", ques)).getSingleResult();
+		if(query>0) return true;
+		return false;
+	}
+
+	public Client getClient(int clientId) {
 		return em.find(Client.class, clientId);
 	}
 	
+	@Transactional
+	public Person removePerson (int id){
+		Person res = em.find(Person.class, id);
+		if (em!=null) em.remove(res);
+		return res;
+	}
+		
 	
 }

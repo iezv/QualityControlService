@@ -42,5 +42,4 @@ public class IdResult {
 		return ques5;
 	}
 
-	
 }

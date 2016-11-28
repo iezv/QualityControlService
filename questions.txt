@@ -1,0 +1,59 @@
+//Company Info
+      select c from Company c
+      
+//All services info
+      select s from Service s
+      
+//All employees info
+      select e from Employee e
+      
+//Responsible person the service
+      select  s.responsibleperson from Service s where s.servicename='repair' 
+      select  s.responsibleperson from Service s where s.servicename='tire_mounting' 
+      select  s.responsibleperson from Service s where s.servicename='washing' 
+      
+//Select Questions of each service
+      select  s.questions from Service s where s.servicename='repair'
+      select  s.questions from Service s where s.servicename='tire_mounting'
+      select  s.questions from Service s where s.servicename='washing'
+      
+//Select Count All ReceivedFeedback 
+      select r from tel_ran.quality.entities.ReceivedFeedback r
+      select COUNT (r) from tel_ran.quality.entities.ReceivedFeedback r
+            
+//Select ReceivedFeedback of each service       
+      select r from tel_ran.quality.entities.ReceivedFeedback r where service='repair'
+      select COUNT (r) from tel_ran.quality.entities.ReceivedFeedback r where service='repair'
+      select r from tel_ran.quality.entities.ReceivedFeedback r where service='tire_mounting'
+      select r from tel_ran.quality.entities.ReceivedFeedback r where service='washing'
+
+//Select Count and ReceivedFeedback of date     
+      select COUNT (r) from ReceivedFeedback r where r.feedbackdate='2016-10-06 00:00:00'
+      select r from ReceivedFeedback r where r.feedbackdate='2016-01-02 00:00:00'
+      
+//Select Count and ReceivedFeedback of month    
+      select r from ReceivedFeedback r where r.feedbackdate like '%2016-01%'
+      select COUNT (r) from ReceivedFeedback r where r.feedbackdate like '%2016-01%'
+      
+//Select Count and ReceivedFeedback of month  and service      
+      select r from ReceivedFeedback r where r.feedbackdate like '%2016-03%' and service='repair'
+      select COUNT (r) from ReceivedFeedback r where r.feedbackdate like '%2016-03%' and service='repair'
+
+//Select Bad ReceivedFeedback of month  ant service 
+      select r from ReceivedFeedback r where r.feedbackdate like '%2016-05%' and service='repair' and resultQuestion.ques1 < 3
+      select COUNT (r) from ReceivedFeedback r where r.feedbackdate like '%2016-05%' and service='repair' and resultQuestion.ques1 < 3
+      select r from ReceivedFeedback r where r.feedbackdate like '%2016-05%' and service='repair' and resultQuestion.ques2 < 3
+      select COUNT (r) from ReceivedFeedback r where r.feedbackdate like '%2016-05%' and service='repair' and resultQuestion.ques2 < 3
+      select r from ReceivedFeedback r where r.feedbackdate like '%2016-05%' and service='repair' and resultQuestion.ques3 < 3
+      select COUNT (r) from ReceivedFeedback r where r.feedbackdate like '%2016-05%' and service='repair' and resultQuestion.ques3 < 3
+      select r from ReceivedFeedback r where r.feedbackdate like '%2016-05%' and service='repair' and resultQuestion.ques4 < 3
+      select COUNT (r) from ReceivedFeedback r where r.feedbackdate like '%2016-05%' and service='repair' and resultQuestion.ques4 < 3
+      select r from ReceivedFeedback r where r.feedbackdate like '%2016-05%' and service='repair' and resultQuestion.ques5 < 3
+      select COUNT (r) from ReceivedFeedback r where r.feedbackdate like '%2016-05%' and service='repair' and resultQuestion.ques5 < 3
+
+//Select open Tickets
+      select COUNT (t) from Ticket t where t.closeDate is NULL
+      select t from Ticket t where t.closeDate is NULL
+//Select open Tickets on Service  and question    
+      select COUNT (t) from Ticket t where t.closeDate is NULL and t.service.servicename='repair' and t.question.questionId=2
+      select t from Ticket t where t.closeDate is NULL and t.service.servicename='repair' and t.question.questionId=2

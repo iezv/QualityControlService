@@ -2,12 +2,15 @@ package tel_ran.quality.entities;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Employee extends Person {
-	
+	@JsonIgnore
     @ManyToOne
 	Manager manager;
     
+    @JsonIgnore
     @ManyToOne
     Service service;
 
@@ -18,7 +21,7 @@ public class Employee extends Person {
 	public Employee() {
 		super();
 	}
-
+    
 	public Manager getManager() {
 		return manager;
 	}
@@ -38,9 +41,8 @@ public class Employee extends Person {
 	@Override
 	public String toString() {
 		return "Employee [id=" + id + ", name=" + name + ", birthyear=" + birthyear + ", phone=" + phone + 
-				", email=" + email + ", address=" + address + "manager=" + manager.id + ", service=" + service.name + "]";
+				", email=" + email + ", address=" + address + "manager=" + (manager==null?"not manager":manager.id) + ", service=" +(service==null?"not service": service.name) + "]";
 	}
-   
-  	
+     	
 			
 }

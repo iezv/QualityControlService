@@ -2,6 +2,10 @@ package tel_ran.quality.entities;
 
 import java.util.*;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import static tel_ran.quality.api.QualityConstants.*;
 
 @Entity
@@ -16,8 +20,8 @@ public class Client extends Person {
 	public Client() {
 		super();
 	}
-
-	@ManyToMany
+	@JsonProperty("Name")
+  	@ManyToMany
 	Set<Service>services;
 	
 	public boolean isShabbat() {

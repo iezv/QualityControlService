@@ -1,8 +1,6 @@
 package tel_ran.quality.entities;
 
-import java.util.Set;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 
 @Entity
 public class Manager extends Employee {

@@ -15,6 +15,10 @@ public abstract class Person {
 	@Embedded
 	Address address;
 	
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
 	public Person(int id, String name, int birthyear, String phone, String email, Address address) {
 		super();
 		this.id = id;

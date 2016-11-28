@@ -24,9 +24,12 @@ public interface QualityConstants {
 	String QUESTION5 = "ques5";
 		
 	String ADD_EMPLOYEE = "employee";
-	String UPDATE_ADDRESS_CLIENT = "update/address";
+	String UPDATE_ADDRESS = "update/address";
 	String GET_CLIENT = "get/client";
 	String GET_EMPLOYEE = "get/employee";
+	String GET_COMPANY = "get/company";
+	String GET_QUESTIONS_SERVICE = "get/questions";
+	
 	String STATUS = "get/status";
 	String DATA = "get/data";
 	
