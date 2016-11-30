@@ -17,8 +17,7 @@ public class Ceo extends Person {
 
 	@Override
 	public String toString() {
-		return "Ceo [id=" + id + ", name=" + name + ", birthyear=" + birthyear +
-				", phone=" + phone + ", email=" + email	+ "]";
+		return "Ceo [id=" + id + ", name=" + name + ", birthyear=" + birthyear + ", phone=" + phone + ", email=" + email	+ "]";
 	}
 
 }

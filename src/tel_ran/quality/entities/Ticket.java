@@ -2,6 +2,7 @@ package tel_ran.quality.entities;
 
 import static tel_ran.quality.api.QualityConstants.*;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import javax.persistence.*;
 
@@ -46,6 +47,15 @@ public class Ticket {
 	}
 
 	
+	public Ticket(String status) {
+		this.status = status;
+		if (status.equals("close")){
+			Date tmp = new Date();
+			closeDate = tmp.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		}
+			
+	}
+
 	public void setCloseDate(LocalDate closeDate) {
 		this.closeDate = closeDate;
 	}
@@ -107,6 +117,17 @@ public class Ticket {
 				if ( Id!=0 ) 
 					id = Id;
 			}
+			Date tmp = new Date((long) data.get( STARTDATE ));
+			startDate = tmp.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			try {
+				Date tmp2 = new Date((long) data.get( CLOSEDATE ));
+				closeDate = tmp2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			} catch (Exception e) {
+				closeDate = null;
+			}
+			status = (String)data.get( STATUS );
+			questCod  = (String)data.get( QUESTCOD ); 
+				
 			} catch (Exception e) {
 			throw new IllegalArgumentException("Wrong data in the map");
 		}

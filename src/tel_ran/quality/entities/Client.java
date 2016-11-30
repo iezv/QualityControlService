@@ -4,6 +4,7 @@ import java.util.*;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import static tel_ran.quality.api.QualityConstants.*;
@@ -20,7 +21,7 @@ public class Client extends Person {
 	public Client() {
 		super();
 	}
-	@JsonProperty("Name")
+	@JsonIgnoreProperties({"manager"})
   	@ManyToMany
 	Set<Service>services;
 	
@@ -40,18 +41,21 @@ public class Client extends Person {
 		this.services = services;
 	}
 	
+
 	@Override
 	public String toString() {
-		return "Client [id=" + id + ", name=" + name + ", birthyear=" + birthyear + ", phone=" + phone +
-				", email=" + email + ", address=" + address +
-				"shabbat=" + shabbat + "]";
+		return "Client [id=" + id + ", name=" + name + ", birthyear=" + birthyear + ", phone=" + phone + ", email=" + email + ", address=" + address + 
+				"shabbat=" + shabbat + ", services=" + (services==null?"NULL":services) + "]";
 	}
 
 	@Override
 	public void setData(Map<String, Object> data) throws IllegalArgumentException {
 		super.setData(data);
 		try {
-			shabbat = (boolean) data.get( SHABBAT );
+			System.out.println(data.get( SHABBAT ));
+			Integer shabb =(Integer) data.get( SHABBAT );
+			if(shabb==1) shabbat = true;
+			else shabbat = false;
 			} catch (Exception e) {
 			throw new IllegalArgumentException("Wrong field/s of Client");
 		}

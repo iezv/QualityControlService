@@ -19,31 +19,33 @@ public class QualityOrmCreation implements CommandLineRunner {
 
 	@Override
 	public void run(String... arg0) throws Exception {
+		
 		// ---------------------------------------
-		//Ceo ceo = new Ceo(100000001, "Ivan", 1975, "555-55-55", "ceo@mail.ru", genRandomAddress());
-		//Company company = new Company("TOYOTA", "Tel Aviv");
-		//createCompany(company, ceo, qualityOrm);
+		Ceo ceo = new Ceo(100000001, "Ivan", 1975, "555-55-55", "ceo@mail.ru", genRandomAddress());
+		Company company = new Company("TOYOTA", "Tel Aviv");
+		createCompany(company, ceo, qualityOrm);
 		// ----------------------------------------
-		//createQuestions(qualityOrm);
+		createQuestions(qualityOrm);
 		// ----------------------------------------
-		//Manager [] managers ={
-		//new Manager(100000002, "Ilya", 1960, "444-44-44", "man1@mail.ru",  genRandomAddress()),
-		//new Manager(100000003, "Vova", 1974, "444-33-22", "man2@mail.ru",  genRandomAddress()),
-		//new Manager(100000004, "Vasya", 1966, "444-13-58", "man3@mail.ru",  genRandomAddress())};
-		//createManagers(managers, qualityOrm);
+		Manager [] managers ={
+		new Manager(100000002, "Ilya", 1960, "444-44-44", "man1@mail.ru",  genRandomAddress()),
+		new Manager(100000003, "Vova", 1974, "444-33-22", "man2@mail.ru",  genRandomAddress()),
+		new Manager(100000004, "Vasya", 1966, "444-13-58", "man3@mail.ru",  genRandomAddress())};
+		createManagers(managers, qualityOrm);
 		// ----------------------------------------
-	    //Set<Service> services = createSetServices();
-	    //createServices(services, qualityOrm, company.getName());
+	    Set<Service> services = createSetServices();
+	    createServices(services, qualityOrm, company.getName());
 		// ----------------------------------------
-		//List<Employee> employees = createListEmployees();
-		//createEmployee(employees, qualityOrm);
+		List<Employee> employees = createListEmployees();
+		createEmployee(employees, qualityOrm);
 		// ----------------------------------------
-		// List<Client> clients = createListClients();
-		// createClients(clients, qualityOrm);
+		 List<Client> clients = createListClients();
+		 createClients(clients, qualityOrm);
 		// ----------------------------------------
-	    // createFeedbacks(qualityOrm);
+	    createFeedbacks(qualityOrm);
 		// ----------------------------------------
 		// Tickets created AUTO!
+		
 	}
 
 	// Add COMPANY
@@ -142,9 +144,7 @@ public class QualityOrmCreation implements CommandLineRunner {
             qualityOrm.addFeedback(tire_mounting, 100000011 + i, "tire_mounting");
             Feedback washing = genFeedback();
             qualityOrm.addFeedback(washing, 100000011 + i, "washing");
-       
-            
-         }
+          }
     }
  
     private static Feedback genFeedback() {

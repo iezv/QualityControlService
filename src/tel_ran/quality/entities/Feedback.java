@@ -4,6 +4,11 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import static tel_ran.quality.api.QualityConstants.*;
 
 @Entity
@@ -17,10 +22,12 @@ public class Feedback {
 	
 	@Embedded
 	Result result;
-
+	
+	@JsonIgnoreProperties({"services", "address"})
 	@OneToOne
 	Client client;
-
+	
+    @JsonIgnore
 	@OneToOne
 	Service service;
 	
@@ -90,19 +97,13 @@ public class Feedback {
 
 	@Override
 	public String toString() {
-		return "ReceivedFeedback [id=" + id + ", date=" + date + ", comment=" + comment + ", result=" + result
-				+ ", client=" + client + ", service=" + service + "]";
+		return "Feedback [id=" + ((Integer)id==null?"NULL":id) + ", date=" + date + ", comment=" + comment + ", result=" + result +
+				", client="+ (client==null?"NULL":client.id) + ", service=" + (service==null?"NULL":service.name) + "]";
 	}
 
 	public void setData(Map<String, Object> data) throws IllegalArgumentException {
 		if (data == null)
 			new IllegalArgumentException("Data is null");
-		try {
-			if (id == 0) {
-				Integer Id = (Integer) data.get(ID);
-				if (Id != 0)
-					id = Id;
-			}
 			Date tmp = new Date((long) data.get(DATE));
 			date = tmp.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 			comment = (String) data.get(COMMENT);
@@ -110,12 +111,8 @@ public class Feedback {
 			Integer ques2 = (Integer) data.get( QUESTION2 );
 			Integer ques3 = (Integer) data.get( QUESTION3 );
 			Integer ques4 = (Integer) data.get( QUESTION4 );
-			Integer ques5 = (Integer) data.get( QUESTION5 );
+	    	Integer ques5 = (Integer) data.get( QUESTION5 );
 			result = new Result(ques1, ques2, ques3, ques4, ques5);
-				
-		} catch (Exception e) {
-			throw new IllegalArgumentException("Wrong data in the map");
+		
 		}
-	}
-
 }

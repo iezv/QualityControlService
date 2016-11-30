@@ -16,7 +16,7 @@ public class Manager extends Employee {
 	@Override
 	public String toString() {
 		return "Manager [id=" + id + ", name=" + name + ", birthyear=" + birthyear + ", phone=" + phone + ", email=" + email + ", address="
-				+ address + ", service=" + service.name + "]";
+				+ address + ", service=" + (service==null?"NULL":service.name) + "]";
 	}
     
 }

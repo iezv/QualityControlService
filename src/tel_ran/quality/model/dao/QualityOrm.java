@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.*;
 import javax.persistence.*;
 import org.springframework.transaction.annotation.Transactional;
+
 import tel_ran.quality.entities.*;
 
 public class QualityOrm {
@@ -58,6 +59,16 @@ public class QualityOrm {
 		if (person==null)
 			return false;
 		person.setAddress(address);
+		return true;
+	}
+	
+	@Transactional
+	public boolean updateTicket(int id, Ticket ticket_new_status) {
+		Ticket ticket = em.find(Ticket.class, id);
+		if (ticket==null)
+			return false;
+		ticket.setStatus(ticket_new_status.getStatus());
+		ticket.setCloseDate(ticket_new_status.getCloseDate());;
 		return true;
 	}
 
@@ -134,6 +145,7 @@ public class QualityOrm {
     public boolean addFeedback(Feedback feedback, int ClientId, String serviceName) {
         if (em.find(Feedback.class, feedback.getId()) != null)
             return false;
+        
         Client client = getClient(ClientId);
         Service service = getService(serviceName);
         feedback.setClient(client);
@@ -192,13 +204,13 @@ public class QualityOrm {
       }
 	}
 
-	private long countBadFeedback(String ques1, LocalDate date) {
+	public long countBadFeedback(String ques1, LocalDate date) {
 		int month = date.getMonthValue();
 		long query=(long)em.createQuery(String.format ("select COUNT (f) from Feedback f where month (f.date)=%d", month)).getSingleResult();
 		return query;
 	}
 
-	private boolean isOpenTicket(String ques) {
+	public boolean isOpenTicket(String ques) {
 		long query=(long)em.createQuery(String.format ("select COUNT (t) from Ticket t where t.closeDate is NULL and "
 				+ "t.questCod='%s'", ques)).getSingleResult();
 		if(query>0) return true;
@@ -215,6 +227,50 @@ public class QualityOrm {
 		if (em!=null) em.remove(res);
 		return res;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List <Service> getServices (){
+		Query query = em.createQuery
+				(String.format("select s from Service s"));
+		return query.getResultList();
+	}
+
+	public List<Client> getClients() {
+		Query query = em.createQuery
+				(String.format("select c from Client c"));
+		return query.getResultList();
+	}
+	
+	public List<Feedback> getFeedbacks() {
+		Query query = em.createQuery
+				(String.format("select f from Feedback f"));
+		return query.getResultList();
+	}
+
+	public List<Feedback> getFeedbacks(int month, int year) {
+		Query query = em.createQuery
+				(String.format("select f from Feedback f where month (f.date)=%d and year (f.date)=%d", month, year));
+		return query.getResultList();
+	}
+	
+	public List<Ticket> getTickets(String status) {
+		Query query = em.createQuery
+				(String.format("select t from Ticket t where status='%s'", status));
+		return query.getResultList();
+	}
+	@Transactional
+	public boolean addPerson(Person person) {
+		if(person != null){
+			if (em.find(Person.class, person.getId())!=null)
+				return false;
+			em.persist(person);
+			    return true;
+			}
+			return false;
+	}
+
+	
+
 		
 	
 }

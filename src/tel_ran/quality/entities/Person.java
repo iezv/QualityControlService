@@ -3,7 +3,7 @@ import static tel_ran.quality.api.QualityConstants.*;
 import java.util.Map;
 import javax.persistence.*;
 @Entity
-public abstract class Person {
+public class Person {
 	@Id
 	@Column(name = "id", nullable = false, insertable = true, updatable = true)
 	int id;
@@ -53,8 +53,6 @@ public abstract class Person {
 		return birthyear;
 	}
 
-	@Override
-	public abstract String toString();
 	
 	public void setData(Map<String,Object>data) throws IllegalArgumentException {
 		if( data==null ) 
@@ -78,5 +76,12 @@ public abstract class Person {
 			throw new IllegalArgumentException("Wrong data in the map");
 		}
 	}
+
+	@Override
+	public String toString() {
+		return "Person [id=" + id + ", name=" + name + ", birthyear=" + birthyear + ", phone=" + phone + ", email="
+				+ email + ", address=" + address + "]";
+	}
+	
 	
 }

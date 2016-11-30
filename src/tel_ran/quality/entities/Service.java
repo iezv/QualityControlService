@@ -4,21 +4,29 @@ import static tel_ran.quality.api.QualityConstants.*;
 import java.util.*;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Service {
 	@Id
 	@Column(name = "name", nullable = false, insertable = true, updatable = true)
 	String name;
 	
+	@JsonIgnore
 	String ques1;
+	@JsonIgnore
 	String ques2;
+	@JsonIgnore
 	String ques3;
+	@JsonIgnore
 	String ques4;
+	@JsonIgnore
 	String ques5;
-			
+	
+	@JsonIgnore		
 	@ManyToOne
 	Company company;
-	
+	@JsonIgnore
 	@OneToOne
     Manager manager;
 	
@@ -117,6 +125,11 @@ public class Service {
 				if (Id != null)
 					name = Id;
 			}
+			ques1 = (String) data.get( QUEST1 );
+			ques2 = (String) data.get( QUEST2 );
+			ques3 = (String) data.get( QUEST3 );
+			ques4 = (String) data.get( QUEST4 );
+			ques5 = (String) data.get( QUEST5 );
 		} catch (Exception e) {
 			throw new IllegalArgumentException("Wrong data in the map");
 		}

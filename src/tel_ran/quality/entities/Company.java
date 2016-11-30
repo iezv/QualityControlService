@@ -84,7 +84,6 @@ public class Company {
 					name = Id;
 			}
 			city = (String) data.get( CITY );
-			//ceo = new Employee();
 			}
     catch (Exception e) {
 			throw new IllegalArgumentException("Wrong data in the map");

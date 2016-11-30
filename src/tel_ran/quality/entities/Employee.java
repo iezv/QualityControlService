@@ -1,7 +1,8 @@
 package tel_ran.quality.entities;
 
+import static tel_ran.quality.api.QualityConstants.*;
+import java.util.Map;
 import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -41,8 +42,11 @@ public class Employee extends Person {
 	@Override
 	public String toString() {
 		return "Employee [id=" + id + ", name=" + name + ", birthyear=" + birthyear + ", phone=" + phone + 
-				", email=" + email + ", address=" + address + "manager=" + (manager==null?"not manager":manager.id) + ", service=" +(service==null?"not service": service.name) + "]";
+				", email=" + email + ", address=" + address + 
+				//"manager=" + (manager==null?"NULL":manager.id) + ", service=" +(service==null?"NULL": service.name) + 
+				"]";
 	}
-     	
+	
+	     	
 			
 }

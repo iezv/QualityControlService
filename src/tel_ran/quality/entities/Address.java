@@ -1,7 +1,7 @@
 package tel_ran.quality.entities;
 
 import javax.persistence.Embeddable;
-
+@SuppressWarnings("serial")
 @Embeddable
 public class Address {
 	String city;
